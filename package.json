@@ -1,0 +1,19 @@
+{
+  "name": "whereis",
+  "version": "0.0.0",
+  "description": "Quick view of team members current location based on Google Calendar events",
+  "main": "index.js",
+  "author": "Adam Chambers",
+  "license": "ISC",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "moment-timezone": "~0.5.21",
+    "node-google-calendar": "~1.1.1",
+    "patterns": "~1.0.3",
+    "st": "~1.2.2",
+    "twig": "~1.12.0",
+    "url-safe-string": "~1.1.0"
+  }
+}

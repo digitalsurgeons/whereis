@@ -1,0 +1,100 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="600">
+  <title>WhereIs</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#231f20">
+  <meta name="msapplication-TileColor" content="#231f20">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <h1 class="heading"><img src="./logo.svg" /></h1>
+
+  <div class="time">
+    <img class="time__clock" src="./clock.svg" />
+    <p class="time__time" data-time></p>
+  </div>
+
+  <div class="update" data-update>
+    <img class="update__img" src="./loading.svg" />
+    <p class="update__label">Updating results, this may take a moment...</p>
+  </div>
+
+  <div class="grid">
+    <ul class="grid__list" data-list>
+      {% for person in people %}
+        <li class="grid__item person">
+          <h2 class="person__name">{{ person.name }}</h2>
+          {% if person.events|length > 0 %}
+            <ul class="events">
+            {% for event in person.events %}
+              <li class="events__item">
+                {% if event.title %}
+                  <p class="person__meeting">{{ event.title }}</p>
+                {% endif %}
+
+                {% if event.location %}
+                  <p class="person__location">{{ event.location }}</p>
+                {% endif %}
+
+                {% if event.times and event.times.allDay %}
+                  <p class="person__times">
+                    All day
+                  </p>
+                {% elseif event.times %}
+                  <p class="person__times">
+                    {{ event.times.start }} -
+                    {{ event.times.end }}
+                  </p>
+                {% endif %}
+
+                {% if event.description %}
+                  <a
+                    class="person__description"
+                    href="#"
+                    data-description-trigger="{{ event.id }}">
+                    <svg class="person__info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                      <g class="nc-icon-wrapper" fill="#0d47a1">
+                        <path fill="#0d47a1" d="M8,0C3.6,0,0,3.6,0,8s3.6,8,8,8s8-3.6,8-8S12.4,0,8,0z M8,14c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6 S11.3,14,8,14z"/>
+                        <rect data-color="color-2" x="7" y="7" width="2" height="5"/>
+                        <circle data-color="color-2" cx="8" cy="5" r="1"/>
+                      </g>
+                    </svg>
+                    View description
+                  </a>
+                {% endif %}
+              </li>
+            {% endfor %}
+            </ul>
+
+            <div class="event-descriptions">
+              {% for event in person.events %}
+                {% if event.description %}
+                  <div class="event-descriptions__desc" data-description="{{ event.id }}">
+                    <a
+                      class="event-descriptions__close"
+                      data-description-close
+                      href="#">
+                      <img src="./close.svg" />
+                    </a>
+                    {{ event.description }}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script src="./index.js"></script>
+</body>
+</html>
