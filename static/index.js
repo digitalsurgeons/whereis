@@ -56,9 +56,7 @@ function generateMarkup(people) {
         if (event.times && event.times.allDay) {
           times = '<p class="person__times">All day</p>'
         } else if (event.times) {
-          times = `<p class="person__times">${event.times.start} - ${
-            event.times.end
-          }</p>`
+          times = `<p class="person__times">${event.times.start} - ${event.times.end}</p>`
         }
 
         template += `
@@ -94,9 +92,7 @@ function generateMarkup(people) {
       person.events.forEach(event => {
         if (event.description) {
           template += `
-            <div class="event-descriptions__desc" data-description="${
-              person.handle
-            }-${event.id}">
+            <div class="event-descriptions__desc" data-description="${person.handle}-${event.id}">
               <a 
                 class="event-descriptions__close"
                 data-description-close

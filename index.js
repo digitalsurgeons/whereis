@@ -5,6 +5,7 @@ process.env.TZ = 'America/New_York'
 
 const fs = require('fs')
 const path = require('path')
+const cron = require('node-cron')
 const CalendarAPI = require('node-google-calendar')
 const twig = require('twig')
 const http = require('http')
@@ -22,18 +23,17 @@ const whereIs = whereIsEveryone()
 
 // fetch and return JSON
 routes.add('GET /update', (req, res) => {
-  console.log('Updating...')
-  whereIs(data => {
-    const stringify = JSON.stringify(data)
-    // store results in static file
-    fs.writeFile('./static/events.json', stringify, 'utf8', () => {
-      console.log('Results saved!')
-    })
-
+  console.log('User: Updating...')
+  updateCache(data => {
     // return data in JSON
     res.setHeader('Content-Type', 'application/json')
-    res.end(stringify)
+    res.end(data)
   })
+})
+
+cron.schedule('*/5 * * * *', function() {
+  console.log('Cron: Updating...')
+  updateCache()
 })
 
 // render Twig using cached events if available
@@ -83,6 +83,20 @@ const server = http.createServer((req, res) => {
 server.listen(9000, () => {
   console.log('🤘 Server is running on http://localhost:9000 🤘')
 })
+
+function updateCache(cb) {
+  whereIs(data => {
+    const stringify = JSON.stringify(data)
+    // store results in static file
+    fs.writeFile('./static/events.json', stringify, 'utf8', () => {
+      console.log('Results saved!')
+    })
+
+    if (cb) {
+      cb(stringify)
+    }
+  })
+}
 
 // recursive function to loop through calendars
 // and pull list of todays events

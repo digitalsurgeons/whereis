@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "moment-timezone": "^0.5.28",
+    "node-cron": "^2.0.3",
     "node-google-calendar": "~1.1.1",
     "patterns": "~1.0.3",
     "st": "~1.2.2",
